@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git credentialsId: 'github-credentials',
-                    url: 'git@github.com:Maurice1909/end-to-end-project.git'
+                    url: 'https://github.com/Maurice1909/end-to-end-project.git'
             }
         }
 
