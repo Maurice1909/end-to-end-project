@@ -17,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}").context('.')
+                    def image = docker.build("${DOCKER_IMAGE_NAME}:${BUILD_ID}")
                 }
             }
         }
@@ -25,7 +25,8 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    docker.image("${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}").run()
+                    def image = docker.image("${DOCKER_IMAGE_NAME}:${BUILD_ID}")
+                    image.run()
                 }
             }
         }
