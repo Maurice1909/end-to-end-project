@@ -4,30 +4,32 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'coffeeshop-app' // Name for your Docker image
     }
+    stage('Checkout') {
+        steps {
+            git branch: 'main',
+                credentialsId: 'github_credentials',
+                url: 'https://github.com/Maurice1909/end-to-end-project.git'
+        }
+    }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'github_credentials',
-                    url: 'https://github.com/Maurice1909/end-to-end-project.git'
+    stage('Build Docker Image') {
+        steps {
+            script {
+                docker.build("${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}") .
+                        context('.')
             }
         }
+    }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}") .
-                            context('.')
-                }
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    docker.run("${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}")
-                }
+    stage('Run Docker Container') {
+        steps {
+            script {
+                docker.run("${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}")
             }
         }
     }
 }
+
+                             
+                
+                   
